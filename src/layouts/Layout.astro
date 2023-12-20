@@ -1,0 +1,84 @@
+---
+import { SEO } from 'astro-seo';
+import '../static/global.css';
+
+export interface Props {
+  title?: string;
+  description?: string;
+}
+
+const canonicalURL = Astro.url.toString();
+const resolvedImageWithDomain = `${Astro.url.origin}/image.png`;
+
+const { title, description } = Astro.props;
+
+const showTitle = title ? `${title} in GPTs Store` : 'Discover the GPTs Store by OpenAI | GPTsURL - Share and search GPTs url to use ChatGPT';
+const showDesc = description || 'GPTsURL is the first and biggest GPTs directory. With GPTsUrl, you can share and discover the best GPTs in ChatGPT Store';
+---
+
+<!doctype html>
+<html lang='en'>
+    <head>
+        <meta charset='UTF-8' />
+        <meta
+            name='viewport'
+            content='width=device-width, initial-scale=1'
+        />
+        <meta name='referrer' content='no-referrer' />
+        <link rel='sitemap' href='/sitemap-index.xml' />
+        <link rel='icon' type='image/png' href='/favicon.png' />
+        <link
+            rel='apple-touch-icon'
+            href='/apple-touch-icon.png'
+            sizes='180x180'
+        />
+        <link rel='mask-icon' href='/favicon.png' color='#FFFFFF' />
+        <meta name='theme-color' content='#212129' />
+        <meta name='generator' content={Astro.generator} />
+        <meta name="keywords" content="GPTs, GPTs store, GPTs lists, GPTs Hunter, ChatGPT, OpenAI GPTs, search GPTs, Awesome GPTs, Custom GPT">
+        <SEO
+            title={showTitle}
+            description={showDesc}
+            canonical={canonicalURL}
+            twitter={{
+                creator: '@LiWen563',
+                site: '@LiWen563',
+                card: 'summary_large_image',
+                imageAlt: 'GPTs URL',
+                description: showDesc,
+                image: resolvedImageWithDomain,
+            }}
+            openGraph={{
+                basic: {
+                    url: canonicalURL,
+                    type: 'website',
+                    title: showTitle,
+                    image: resolvedImageWithDomain,
+                },
+                image: {
+                    url: resolvedImageWithDomain,
+                    alt: 'GPTs URL',
+                },
+            }}
+        />
+    </head>
+    <body class='flex flex-col min-h-screen'>
+        <slot />
+    </body>
+</html>
+
+<script>
+const initTheme = () => {
+    const darkSchema = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const storageTheme = localStorage.getItem('theme');
+    if (storageTheme) {
+        document.documentElement.classList.toggle(
+        'dark',
+        storageTheme === 'dark'
+        );
+    } else {
+        document.documentElement.classList.toggle('dark', darkSchema);
+    }
+};
+initTheme();
+</script>
